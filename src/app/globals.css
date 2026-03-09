@@ -1,0 +1,281 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────
+   NOIR ESTATE — Global Design System
+───────────────────────────────────────────── */
+
+:root {
+  --warm-black:   #08080a;
+  --deep-black:   #050507;
+  --off-white:    #f2ede6;
+  --warm-white:   #faf8f4;
+  --mid-gray:     #b8b3aa;
+  --dark-gray:    #1a1916;
+  --cream:        #ede8df;
+  --chrome-dark:  #8a8a8a;
+  --chrome-mid:   #d0d0d0;
+
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-expo: cubic-bezier(0.87, 0, 0.13, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  background: var(--warm-black);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--warm-black);
+  color: var(--off-white);
+  font-family: var(--font-inter), "Inter", system-ui, sans-serif;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── Cursor ── */
+.cursor {
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+}
+
+.cursor-dot {
+  width: 8px; height: 8px;
+  background: var(--off-white);
+  border-radius: 50%;
+  mix-blend-mode: difference;
+  transition: width 0.45s var(--ease-expo), height 0.45s var(--ease-expo);
+}
+
+.cursor-ring {
+  position: fixed;
+  top: 0; left: 0;
+  width: 40px; height: 40px;
+  border: 1px solid rgba(242, 237, 230, 0.28);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: width 0.5s var(--ease-expo), height 0.5s var(--ease-expo),
+              border-color 0.3s, opacity 0.3s;
+}
+
+.cursor-label {
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(10px, -50%);
+  font-size: 8px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--off-white);
+  opacity: 0;
+  transition: opacity 0.25s;
+  font-family: var(--font-inter), sans-serif;
+  mix-blend-mode: difference;
+  white-space: nowrap;
+  padding-top: 1px;
+}
+
+.cursor.is-hover .cursor-dot { width: 48px; height: 48px; }
+.cursor-ring.is-hover { opacity: 0; }
+.cursor-label.is-hover { opacity: 1; }
+
+/* ── Preloader ── */
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  overflow: hidden;
+}
+
+.preloader-top,
+.preloader-bot {
+  position: absolute;
+  left: 0; right: 0;
+  background: var(--warm-black);
+  will-change: transform;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preloader-top { top: 0; height: 50%; align-items: flex-end; padding-bottom: 2px; }
+.preloader-bot { bottom: 0; height: 50%; align-items: flex-start; padding-top: 2px; }
+
+.preloader-num {
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: clamp(100px, 20vw, 260px);
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  color: var(--off-white);
+  display: block;
+}
+
+.preloader-bar {
+  position: absolute;
+  top: calc(50% - 0.5px);
+  left: 0;
+  height: 1px;
+  width: 0%;
+  background: rgba(242, 237, 230, 0.35);
+  z-index: 10001;
+  pointer-events: none;
+}
+
+/* ── Fullscreen nav ── */
+.fullscreen-nav {
+  position: fixed;
+  inset: 0;
+  background: var(--off-white);
+  z-index: 990;
+  clip-path: polygon(100% 0, 100% 0, 100% 100%, 100% 100%);
+  will-change: clip-path;
+  pointer-events: none;
+}
+
+.fullscreen-nav.open {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  pointer-events: all;
+}
+
+/* ── Scroll progress bar ── */
+.scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 1px;
+  background: rgba(242, 237, 230, 0.5);
+  z-index: 800;
+  transform-origin: left center;
+  transform: scaleX(0);
+  will-change: transform;
+}
+
+/* ── Text split helpers ── */
+.line-mask {
+  overflow: hidden;
+  display: block;
+}
+
+.split-char-outer {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+.split-char-inner {
+  display: inline-block;
+  will-change: transform;
+}
+
+/* ── Chrome gradient ── */
+.chrome {
+  background: linear-gradient(
+    120deg,
+    #7a7a7a 0%,
+    #c8c8c8 25%,
+    #e4e4e4 42%,
+    #9a9a9a 55%,
+    #d4d4d4 70%,
+    #888 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Image / clip reveals ── */
+.img-wrap {
+  overflow: hidden;
+  position: relative;
+}
+
+.img-wrap img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  will-change: transform;
+}
+
+/* ── Magnetic button ── */
+.mag-btn {
+  cursor: none;
+  will-change: transform;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Divider ── */
+.hr {
+  width: 100%;
+  height: 1px;
+  background: rgba(242, 237, 230, 0.1);
+}
+
+/* ── Film grain ── */
+.noise {
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 150px 150px;
+  opacity: 0.03;
+  pointer-events: none;
+  z-index: 9900;
+  animation: noiseShift 0.4s steps(2) infinite;
+}
+
+@keyframes noiseShift {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(-2px, 2px); }
+  50%  { transform: translate(2px, -2px); }
+  75%  { transform: translate(-1px, 1px); }
+}
+
+/* ── Inverted (cream) section ── */
+.inverted {
+  background: var(--cream);
+  color: var(--warm-black);
+}
+
+.inverted .t-label { color: rgba(8, 8, 10, 0.4); }
+.inverted .hr { background: rgba(8, 8, 10, 0.1); }
+
+/* ── Watermark nums ── */
+.watermark-num {
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: clamp(180px, 28vw, 420px);
+  font-weight: 300;
+  letter-spacing: -0.05em;
+  color: rgba(242, 237, 230, 0.03);
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+}
+
+/* ── Overflow text ── */
+.overflow-title { overflow: visible; white-space: nowrap; }
+
+/* ── Selection ── */
+::selection { background: var(--off-white); color: var(--warm-black); }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--warm-black); }
+::-webkit-scrollbar-thumb { background: rgba(242, 237, 230, 0.12); }
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  body { cursor: auto; }
+  .cursor, .cursor-ring, .cursor-label { display: none !important; }
+}
