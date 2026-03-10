@@ -1,34 +1,41 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Inter } from "next/font/google";
+import { Syne, Fraunces, DM_Sans } from "next/font/google";
 import "./globals.css";
 
-const cormorant = Cormorant_Garamond({
-  variable: "--font-cormorant",
+const syne = Syne({
+  variable: "--font-syne",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
+});
+
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
+  subsets: ["latin"],
+  weight: ["300", "400", "500"],
   style: ["normal", "italic"],
   display: "swap",
 });
 
-const inter = Inter({
-  variable: "--font-inter",
+const dm = DM_Sans({
+  variable: "--font-dm",
   subsets: ["latin"],
   weight: ["300", "400", "500"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "NOIR ESTATE — Real Estate Reimagined",
+  title: "FORMA — Immobilier de Prestige",
   description:
-    "We don't sell properties. We curate spaces where life happens. Luxury architectural real estate. Paris · Geneva · Dubai.",
+    "Agence immobilière de prestige depuis 2009. Des propriétés d'exception pour des clients d'exception. Paris · Lyon · Côte d'Azur · Monaco.",
 };
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
-      <body className={`${cormorant.variable} ${inter.variable}`}>
+    <html lang="fr">
+      <body className={`${syne.variable} ${fraunces.variable} ${dm.variable}`}>
         {children}
       </body>
     </html>

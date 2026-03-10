@@ -1,62 +1,79 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 
-export default function Preloader({ onComplete }: { onComplete: () => void }) {
-  const topRef = useRef<HTMLDivElement>(null);
-  const botRef = useRef<HTMLDivElement>(null);
-  const barRef = useRef<HTMLDivElement>(null);
-  const countRef = useRef<HTMLSpanElement>(null);
+interface Props {
+  onComplete: () => void;
+}
+
+export default function Preloader({ onComplete }: Props) {
+  const rootRef = useRef<HTMLDivElement>(null);
+  const lineRef = useRef<HTMLDivElement>(null);
+  const numRef  = useRef<HTMLDivElement>(null);
   const logoRef = useRef<HTMLDivElement>(null);
-  const [count, setCount] = useState(0);
+  const tagRef  = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const tl = gsap.timeline();
-    const obj = { val: 0 };
 
+    tl.to(logoRef.current, {
+      opacity: 1, y: 0,
+      duration: 0.7, ease: "expo.out",
+    }, 0);
+
+    tl.to(tagRef.current, {
+      opacity: 1,
+      duration: 0.5, ease: "power2.out",
+    }, 0.35);
+
+    const obj = { val: 0 };
     tl.to(obj, {
       val: 100,
-      duration: 2,
+      duration: 1.8,
       ease: "power2.inOut",
-      onUpdate() {
-        const v = Math.round(obj.val);
-        setCount(v);
-        if (barRef.current) barRef.current.style.width = `${v}%`;
+      onUpdate: () => {
+        if (numRef.current) numRef.current.textContent = `${Math.round(obj.val)}%`;
       },
+    }, 0.3);
+
+    tl.to(lineRef.current, {
+      width: "100%",
+      duration: 1.8,
+      ease: "power2.inOut",
+    }, 0.3);
+
+    tl.to(rootRef.current, {
+      opacity: 0, y: -16,
+      duration: 0.55, ease: "power2.in",
+      delay: 0.2,
     });
 
-    tl.to({}, { duration: 0.18 });
-
-    tl.to([countRef.current, logoRef.current], {
-      opacity: 0,
-      y: -16,
-      duration: 0.4,
-      ease: "power2.in",
-      stagger: 0.04,
-    });
-
-    tl.to(topRef.current, { yPercent: -100, duration: 0.95, ease: "power3.inOut" }, "wipe");
-    tl.to(botRef.current, { yPercent: 100, duration: 0.95, ease: "power3.inOut", onComplete }, "wipe");
-
-    return () => { tl.kill(); };
+    tl.call(() => onComplete(), undefined, ">");
   }, [onComplete]);
 
   return (
-    <div className="preloader">
-      <div ref={topRef} className="preloader-top">
-        <span ref={countRef} className="preloader-num">{count}</span>
+    <div className="preloader" ref={rootRef}>
+      <div ref={logoRef} className="preloader-logo" style={{ opacity: 0 }}>
+        FORMA
       </div>
-      <div ref={botRef} className="preloader-bot">
-        <span className="preloader-num select-none" style={{ opacity: 0.05 }} aria-hidden>{count}</span>
+      <div
+        ref={tagRef}
+        style={{
+          fontFamily: "var(--font-fraunces)",
+          fontStyle: "italic",
+          fontSize: "13px",
+          color: "rgba(247,243,236,0.35)",
+          opacity: 0,
+          marginTop: "-0.5rem",
+        }}
+      >
+        Immobilier de Prestige
       </div>
-      <div ref={barRef} className="preloader-bar" />
-      <div ref={logoRef} style={{ position: "absolute", top: "40px", left: "40px", zIndex: 10002, fontFamily: "var(--font-inter), sans-serif", fontSize: "9px", letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(242,237,230,0.35)" }}>
-        NOIR ESTATE
+      <div className="preloader-line-wrap" style={{ marginTop: "1rem" }}>
+        <div className="preloader-line-fill" ref={lineRef} />
       </div>
-      <div style={{ position: "absolute", bottom: "36px", right: "40px", zIndex: 10002, fontFamily: "var(--font-inter), sans-serif", fontSize: "9px", letterSpacing: "0.25em", textTransform: "uppercase", color: "rgba(242,237,230,0.2)" }}>
-        Loading experience
-      </div>
+      <div className="preloader-num" ref={numRef}>0%</div>
     </div>
   );
 }

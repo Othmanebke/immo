@@ -3,23 +3,18 @@
 import { useState, useCallback } from "react";
 import dynamic from "next/dynamic";
 
-import Preloader from "@/components/Preloader";
-import CustomCursor from "@/components/CustomCursor";
-import Navigation from "@/components/Navigation";
-import Hero from "@/components/Hero";
-import Manifesto from "@/components/Manifesto";
-import Services from "@/components/Services";
-import FeaturedSpaces from "@/components/FeaturedSpaces";
-import Process from "@/components/Process";
-import Lifestyle from "@/components/Lifestyle";
-import Press from "@/components/Press";
-import Quotes from "@/components/Quotes";
-import CTA from "@/components/CTA";
-import Footer from "@/components/Footer";
-import Marquee from "@/components/Marquee";
-import ScrollProgress from "@/components/ScrollProgress";
+import Preloader          from "@/components/Preloader";
+import CustomCursor       from "@/components/CustomCursor";
+import Navigation         from "@/components/Navigation";
+import Hero               from "@/components/Hero";
+import Marquee            from "@/components/Marquee";
+import FeaturedProperties from "@/components/FeaturedProperties";
+import About              from "@/components/About";
+import Services           from "@/components/Services";
+import Testimonials       from "@/components/Testimonials";
+import CTA                from "@/components/CTA";
+import Footer             from "@/components/Footer";
 
-const HorizontalGallery = dynamic(() => import("@/components/HorizontalGallery"), { ssr: false });
 const SmoothScroll = dynamic(() => import("@/components/SmoothScroll"), { ssr: false });
 
 export default function Home() {
@@ -28,33 +23,21 @@ export default function Home() {
 
   return (
     <>
-      {/* Film grain */}
-      <div className="noise" aria-hidden />
-
-      {/* Preloader */}
-      {!ready && <Preloader onComplete={onDone} />}
-
-      {/* Custom cursor */}
       <CustomCursor />
+      {!ready && <Preloader onComplete={onDone} />}
 
       {ready && (
         <SmoothScroll>
-          <ScrollProgress />
-          <div style={{ background: "var(--warm-black)" }}>
+          <div style={{ background: "var(--ivory)" }}>
             <Navigation />
             <main>
               <Hero />
               <Marquee />
-              <Manifesto />
-              <Services />
-              <FeaturedSpaces />
-              <Marquee />
-              <HorizontalGallery />
-              <Process />
-              <Lifestyle />
-              <Press />
-              <Quotes />
+              <FeaturedProperties />
+              <About />
               <Marquee inverted />
+              <Services />
+              <Testimonials />
               <CTA />
             </main>
             <Footer />

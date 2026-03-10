@@ -6,217 +6,177 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const serif: React.CSSProperties = { fontFamily: "var(--font-cormorant), Georgia, serif" };
-const inter: React.CSSProperties = { fontFamily: "var(--font-inter), sans-serif" };
-
-const services = [
+const SERVICES = [
   {
     num: "01",
-    title: ["Acquisition", "Advisory"],
-    image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=900&q=80",
-    desc: "We guide discerning clients through every step of acquiring exceptional properties — from initial identification to keys in hand. Off-market access, legal coordination, full due diligence.",
-    tags: ["Market intelligence", "Off-market access", "Legal coordination", "Due diligence"],
+    title: "Acquisition & Conseil",
+    desc: "De la recherche au compromis, nous vous accompagnons à chaque étape. Analyse de marché, visites privées, négociation experte et audit juridique complet.",
+    img: "https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=700&q=80&fit=crop",
+    tags: ["Recherche ciblée", "Négociation", "Audit juridique"],
   },
   {
     num: "02",
-    title: ["Portfolio", "Curation"],
-    image: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=900&q=80",
-    desc: "For those who hold multiple properties as an art form. We manage, maintain, and evolve your real estate portfolio with the same precision as a private collection.",
-    tags: ["Asset management", "Rental optimization", "Renovation oversight", "Strategic exit"],
+    title: "Vente & Valorisation",
+    desc: "Mise en valeur photographique professionnelle, diffusion internationale exclusive, qualification précise des acquéreurs pour vendre dans les meilleures conditions.",
+    img: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=700&q=80&fit=crop",
+    tags: ["Estimation précise", "Home staging", "Diffusion premium"],
   },
   {
     num: "03",
-    title: ["Interior", "Architecture"],
-    image: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=900&q=80",
-    desc: "Space doesn't end at purchase. We connect clients with the finest architects and designers to complete the vision — turning a property into a statement.",
-    tags: ["Architect selection", "Concept development", "Contractor management", "Styling & art"],
+    title: "Gestion & Location",
+    desc: "Gestion locative complète, sélection rigoureuse des locataires, suivi technique et comptable pour un rendement optimisé et un patrimoine préservé.",
+    img: "https://images.unsplash.com/photo-1505691723518-36a5ac3be353?w=700&q=80&fit=crop",
+    tags: ["Gestion complète", "Sélection locataires", "Optimisation fiscale"],
   },
 ];
 
 export default function Services() {
   const sectionRef = useRef<HTMLElement>(null);
-  const headRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    gsap.from(headRef.current?.querySelectorAll(".sci") ?? [], {
-      yPercent: 110,
-      duration: 1.05,
-      stagger: 0.025,
-      ease: "power4.out",
-      scrollTrigger: { trigger: headRef.current, start: "top 78%" },
-    });
-
-    gsap.from(".svc-card", {
-      y: 60,
-      opacity: 0,
-      duration: 1.1,
-      stagger: 0.15,
-      ease: "power3.out",
-      scrollTrigger: { trigger: ".svc-grid", start: "top 74%" },
-    });
-
-    document.querySelectorAll<HTMLElement>(".svc-img-wrap").forEach((el, i) => {
-      gsap.fromTo(
-        el,
-        { clipPath: "inset(0 0 100% 0)" },
+    const ctx = gsap.context(() => {
+      gsap.fromTo(".srv-header",
+        { opacity: 0, y: 32 },
         {
-          clipPath: "inset(0 0 0% 0)",
-          duration: 1.3,
-          ease: "power3.inOut",
-          delay: i * 0.1,
-          scrollTrigger: { trigger: el, start: "top 80%" },
+          opacity: 1, y: 0, duration: 1, ease: "expo.out",
+          scrollTrigger: { trigger: ".srv-header", start: "top 82%" },
         }
       );
-    });
+      gsap.fromTo(".srv-item",
+        { opacity: 0, y: 48 },
+        {
+          opacity: 1, y: 0, stagger: 0.13, duration: 0.95, ease: "expo.out",
+          scrollTrigger: { trigger: ".srv-list", start: "top 78%" },
+        }
+      );
+    }, sectionRef);
 
-    // Parallax on each service image
-    document.querySelectorAll<HTMLElement>(".svc-img-inner").forEach((el) => {
-      gsap.to(el, {
-        yPercent: -6,
-        ease: "none",
-        scrollTrigger: { trigger: el, start: "top bottom", end: "bottom top", scrub: 1 },
-      });
-    });
+    return () => ctx.revert();
   }, []);
 
   return (
     <section
       ref={sectionRef}
       id="services"
-      style={{ background: "var(--warm-black)", overflow: "hidden", padding: "clamp(80px, 12vw, 160px) 0" }}
+      className="section-pad"
+      style={{ padding: "8rem 3rem", background: "var(--ivory)" }}
     >
-      <div style={{ maxWidth: "1600px", margin: "0 auto", padding: "0 clamp(24px, 5vw, 80px)" }}>
-
-        {/* Label row */}
-        <div style={{ display: "flex", alignItems: "center", gap: "20px", marginBottom: "clamp(40px, 6vw, 72px)" }}>
-          <span style={{ ...inter, fontSize: "9px", letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(242,237,230,0.3)" }}>02</span>
-          <div style={{ flex: 1, height: "1px", background: "rgba(242,237,230,0.08)" }} />
-          <span style={{ ...inter, fontSize: "9px", letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(242,237,230,0.3)" }}>Expertise</span>
-        </div>
-
-        {/* Headline */}
-        <div
-          ref={headRef}
-          style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: "24px", flexWrap: "wrap", marginBottom: "clamp(60px, 9vw, 120px)" }}
-        >
-          <div>
-            <div style={{ overflow: "hidden", lineHeight: 0.88, marginBottom: "0.04em" }}>
-              {"What".split("").map((ch, i) => (
-                <span key={i} style={{ overflow: "hidden", display: "inline-block", verticalAlign: "bottom" }}>
-                  <span className="sci" style={{ display: "inline-block", ...serif, fontSize: "clamp(56px, 9.5vw, 140px)", fontWeight: 300, letterSpacing: "-0.04em", color: "var(--off-white)" }}>
-                    {ch}
-                  </span>
-                </span>
-              ))}
-            </div>
-            <div style={{ overflow: "hidden", lineHeight: 0.88, marginLeft: "clamp(28px, 6vw, 110px)" }}>
-              {"we offer.".split("").map((ch, i) => (
-                <span key={i} style={{ overflow: "hidden", display: "inline-block", verticalAlign: "bottom" }}>
-                  <span className="sci" style={{
-                    display: "inline-block", ...serif, fontSize: "clamp(56px, 9.5vw, 140px)", fontWeight: 300, fontStyle: "italic", letterSpacing: "-0.04em",
-                    background: "linear-gradient(120deg,#7a7a7a,#d0d0d0,#9a9a9a)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
-                  }}>
-                    {ch === " " ? "\u00A0" : ch}
-                  </span>
-                </span>
-              ))}
-            </div>
+      {/* Header */}
+      <div className="srv-header grid-2col-srv" style={{ opacity: 0 }}>
+        <div>
+          <div className="section-label" style={{ marginBottom: "1rem" }}>
+            Nos services
           </div>
-          <p style={{ ...inter, fontSize: "12px", letterSpacing: "0.03em", lineHeight: 1.9, color: "rgba(242,237,230,0.38)", maxWidth: "300px", fontWeight: 300, paddingBottom: "8px" }}>
-            Three disciplines. One singular approach to luxury real estate — where every service is as considered as the properties we represent.
-          </p>
+          <h2 style={{
+            fontFamily: "var(--font-syne)",
+            fontSize: "clamp(30px, 4vw, 56px)",
+            fontWeight: 800,
+            letterSpacing: "-0.03em",
+            color: "var(--dark)",
+            lineHeight: 1.0,
+          }}>
+            Un Accompagnement<br />Sur Mesure
+          </h2>
         </div>
+        <p style={{
+          fontFamily: "var(--font-dm)",
+          fontSize: "15px",
+          lineHeight: 1.8,
+          color: "var(--muted)",
+        }}>
+          FORMA propose une gamme complète de services immobiliers, du conseil
+          à la gestion patrimoniale, toujours avec le même niveau d'exigence
+          et une attention absolue aux détails.
+        </p>
+      </div>
 
-        {/* Services grid */}
-        <div
-          className="svc-grid"
-          style={{ display: "grid", gridTemplateColumns: "1fr", gap: "0", borderTop: "1px solid rgba(242,237,230,0.08)" }}
-        >
-          {services.map((svc, idx) => (
-            <div
-              key={svc.num}
-              className="svc-card"
-              style={{
-                display: "grid",
-                gridTemplateColumns: idx % 2 === 0 ? "1fr 1fr" : "1fr 1fr",
-                minHeight: "480px",
-                borderBottom: "1px solid rgba(242,237,230,0.08)",
-                direction: idx % 2 !== 0 ? "rtl" : "ltr",
-              }}
-            >
-              {/* Image */}
-              <div
-                className="svc-img-wrap"
-                style={{ overflow: "hidden", position: "relative" }}
-                data-cursor="view"
-              >
-                <img
-                  className="svc-img-inner"
-                  src={svc.image}
-                  alt={svc.title.join(" ")}
-                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", transform: "scale(1.06)" }}
-                />
+      {/* List */}
+      <div className="srv-list">
+        {SERVICES.map((srv) => (
+          <div
+            key={srv.num}
+            className="srv-item"
+            style={{
+              display: "grid",
+              borderTop: "1px solid var(--border)",
+              padding: "2.5rem 0",
+              opacity: 0,
+              transition: "background 0.35s",
+              margin: "0 -3rem",
+              paddingLeft: "3rem",
+              paddingRight: "3rem",
+            }}
+            onMouseEnter={e => ((e.currentTarget as HTMLElement).style.background = "var(--ivory-alt)")}
+            onMouseLeave={e => ((e.currentTarget as HTMLElement).style.background = "transparent")}
+          >
+            <div className="srv-grid">
+              {/* Number */}
+              <span style={{
+                fontFamily: "var(--font-fraunces)",
+                fontSize: "13px",
+                color: "var(--accent)",
+                letterSpacing: "0.08em",
+                fontStyle: "italic",
+                width: "3rem",
+                paddingTop: "0.25rem",
+              }}>
+                {srv.num}
+              </span>
+
+              {/* Content */}
+              <div>
+                <h3 style={{
+                  fontFamily: "var(--font-syne)",
+                  fontSize: "clamp(18px, 1.8vw, 26px)",
+                  fontWeight: 700,
+                  letterSpacing: "-0.02em",
+                  color: "var(--dark)",
+                  marginBottom: "0.7rem",
+                }}>
+                  {srv.title}
+                </h3>
+                <p style={{
+                  fontFamily: "var(--font-dm)",
+                  fontSize: "14px",
+                  lineHeight: 1.75,
+                  color: "var(--muted)",
+                  maxWidth: "440px",
+                }}>
+                  {srv.desc}
+                </p>
               </div>
 
-              {/* Info */}
-              <div
-                style={{
-                  direction: "ltr",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  padding: "clamp(40px, 6vw, 80px) clamp(32px, 5vw, 70px)",
-                  position: "relative",
-                  overflow: "hidden",
-                }}
-              >
-                {/* Watermark number */}
-                <div
-                  aria-hidden
-                  style={{
-                    position: "absolute",
-                    right: "-6%",
-                    bottom: "0%",
-                    ...serif,
-                    fontSize: "clamp(140px, 22vw, 320px)",
-                    fontWeight: 300,
-                    letterSpacing: "-0.06em",
-                    color: "rgba(242,237,230,0.03)",
-                    lineHeight: 1,
-                    pointerEvents: "none",
-                    userSelect: "none",
-                  }}
-                >
-                  {svc.num}
-                </div>
-
-                <span style={{ ...inter, fontSize: "9px", letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(242,237,230,0.28)", display: "block", marginBottom: "clamp(16px, 2.5vw, 28px)" }}>
-                  {svc.num} / Service
-                </span>
-
-                <h3 style={{ ...serif, fontSize: "clamp(36px, 5.5vw, 80px)", fontWeight: 300, letterSpacing: "-0.03em", lineHeight: 0.95, color: "var(--off-white)", marginBottom: "clamp(20px, 3vw, 36px)" }}>
-                  {svc.title[0]}<br />
-                  <em style={{ background: "linear-gradient(120deg,#7a7a7a,#d0d0d0,#9a9a9a)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-                    {svc.title[1]}
-                  </em>
-                </h3>
-
-                <p style={{ ...inter, fontSize: "13px", letterSpacing: "0.03em", lineHeight: 1.9, color: "rgba(242,237,230,0.42)", fontWeight: 300, maxWidth: "360px", marginBottom: "clamp(28px, 4vw, 44px)" }}>
-                  {svc.desc}
-                </p>
-
-                <div style={{ borderTop: "1px solid rgba(242,237,230,0.07)", paddingTop: "clamp(16px, 2.5vw, 28px)" }}>
-                  {svc.tags.map((tag) => (
-                    <div key={tag} style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "10px" }}>
-                      <div style={{ width: "4px", height: "1px", background: "rgba(242,237,230,0.25)", flexShrink: 0 }} />
-                      <span style={{ ...inter, fontSize: "10px", letterSpacing: "0.2em", color: "rgba(242,237,230,0.35)", textTransform: "uppercase" }}>{tag}</span>
-                    </div>
+              {/* Tags + thumbnail */}
+              <div className="srv-tags" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "1.5rem" }}>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
+                  {srv.tags.map(tag => (
+                    <span key={tag} style={{
+                      fontFamily: "var(--font-syne)",
+                      fontSize: "9px",
+                      letterSpacing: "0.22em",
+                      textTransform: "uppercase",
+                      padding: "0.4rem 0.85rem",
+                      border: "1px solid var(--border)",
+                      color: "var(--muted)",
+                    }}>
+                      {tag}
+                    </span>
                   ))}
                 </div>
+                <div style={{ width: "76px", height: "76px", flexShrink: 0, overflow: "hidden" }}>
+                  <img
+                    src={srv.img}
+                    alt={srv.title}
+                    style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.6s var(--ease-expo)" }}
+                    onMouseEnter={e => ((e.currentTarget as HTMLImageElement).style.transform = "scale(1.1)")}
+                    onMouseLeave={e => ((e.currentTarget as HTMLImageElement).style.transform = "scale(1)")}
+                  />
+                </div>
               </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
+        <div style={{ borderTop: "1px solid var(--border)" }} />
       </div>
     </section>
   );

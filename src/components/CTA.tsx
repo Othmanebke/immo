@@ -3,152 +3,172 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import SplitText from "./SplitText";
-import MagneticButton from "./MagneticButton";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const CITIES = ["Paris", "Lyon", "Côte d'Azur", "Monaco"];
+
 export default function CTA() {
   const sectionRef = useRef<HTMLElement>(null);
-  const imgRef = useRef<HTMLDivElement>(null);
-  const imgInnerRef = useRef<HTMLImageElement>(null);
-  const textColRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Clip-path reveal on image
-    gsap.fromTo(imgRef.current, { clipPath: "inset(0 0 100% 0)" }, {
-      clipPath: "inset(0 0 0% 0)",
-      duration: 1.5,
-      ease: "power3.inOut",
-      scrollTrigger: { trigger: sectionRef.current, start: "top 70%" },
-    });
+    const ctx = gsap.context(() => {
+      gsap.fromTo(".cta-content",
+        { opacity: 0, y: 44 },
+        {
+          opacity: 1, y: 0, duration: 1.1, ease: "expo.out",
+          scrollTrigger: { trigger: sectionRef.current, start: "top 72%" },
+        }
+      );
+    }, sectionRef);
 
-    gsap.from(imgInnerRef.current, {
-      scale: 1.1,
-      duration: 2,
-      ease: "power3.out",
-      scrollTrigger: { trigger: sectionRef.current, start: "top 70%" },
-    });
-
-    // Text chars
-    const chars = textColRef.current?.querySelectorAll(".sci");
-    if (chars) {
-      gsap.from(chars, {
-        yPercent: 110,
-        duration: 1.1,
-        stagger: 0.022,
-        ease: "power4.out",
-        scrollTrigger: { trigger: textColRef.current, start: "top 72%" },
-      });
-    }
-
-    gsap.from(textColRef.current?.querySelectorAll(".fade-el") ?? [], {
-      opacity: 0,
-      y: 24,
-      duration: 0.9,
-      stagger: 0.1,
-      ease: "power2.out",
-      scrollTrigger: { trigger: textColRef.current, start: "top 70%" },
-    });
+    return () => ctx.revert();
   }, []);
-
-  const serif: React.CSSProperties = { fontFamily: "var(--font-cormorant), Georgia, serif" };
-  const inter: React.CSSProperties = { fontFamily: "var(--font-inter), sans-serif" };
 
   return (
     <section
       ref={sectionRef}
       id="contact"
-      style={{ background: "var(--warm-black)", overflow: "hidden", minHeight: "90vh", display: "grid", gridTemplateColumns: "1fr 1fr" }}
-      className="flex flex-col md:grid"
+      className="section-pad"
+      style={{
+        padding: "8rem 3rem",
+        background: "var(--ivory-alt)",
+        position: "relative",
+        overflow: "hidden",
+      }}
     >
-      {/* ── Left: text ── */}
+      {/* Giant watermark */}
       <div
-        ref={textColRef}
-        style={{ display: "flex", flexDirection: "column", justifyContent: "center", padding: "clamp(72px, 10vw, 140px) clamp(32px, 6vw, 80px)", position: "relative" }}
+        aria-hidden
+        style={{
+          position: "absolute",
+          bottom: "-3rem",
+          right: "-1rem",
+          fontFamily: "var(--font-syne)",
+          fontSize: "clamp(100px, 18vw, 240px)",
+          fontWeight: 800,
+          color: "rgba(196,112,74,0.055)",
+          letterSpacing: "-0.05em",
+          lineHeight: 1,
+          userSelect: "none",
+          pointerEvents: "none",
+          whiteSpace: "nowrap",
+        }}
       >
-        {/* Watermark */}
-        <div aria-hidden style={{ position: "absolute", right: 0, top: "50%", transform: "translateY(-50%)", ...serif, fontSize: "clamp(160px, 22vw, 300px)", fontWeight: 300, letterSpacing: "-0.06em", color: "rgba(242,237,230,0.03)", pointerEvents: "none", userSelect: "none", lineHeight: 1 }}>
-          06
-        </div>
-
-        <span className="fade-el" style={{ ...inter, fontSize: "9px", letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(242,237,230,0.3)", display: "block", marginBottom: "clamp(24px, 4vw, 48px)" }}>
-          06 / Begin
-        </span>
-
-        {/* Large headline — char by char */}
-        <div style={{ marginBottom: "clamp(28px, 4vw, 48px)" }}>
-          <SplitText
-            text="Find the"
-            tag="div"
-            style={{ ...serif, fontSize: "clamp(52px, 8.5vw, 128px)", fontWeight: 300, letterSpacing: "-0.035em", color: "var(--off-white)", lineHeight: 0.9, marginBottom: "0.05em" }}
-          />
-          <SplitText
-            text="space that"
-            tag="div"
-            style={{ ...serif, fontSize: "clamp(52px, 8.5vw, 128px)", fontWeight: 300, letterSpacing: "-0.035em", color: "var(--off-white)", lineHeight: 0.9, marginBottom: "0.05em", marginLeft: "clamp(20px, 4vw, 60px)" }}
-          />
-          <SplitText
-            text="defines you."
-            tag="div"
-            style={{
-              ...serif,
-              fontSize: "clamp(52px, 8.5vw, 128px)",
-              fontWeight: 300,
-              fontStyle: "italic",
-              letterSpacing: "-0.035em",
-              background: "linear-gradient(120deg,#7a7a7a,#d0d0d0,#9a9a9a)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
-              lineHeight: 0.9,
-            }}
-          />
-        </div>
-
-        <p className="fade-el" style={{ ...inter, fontSize: "13px", letterSpacing: "0.03em", lineHeight: 1.9, color: "rgba(242,237,230,0.4)", maxWidth: "340px", fontWeight: 300, marginBottom: "clamp(32px, 5vw, 56px)" }}>
-          Begin with a conversation. We match exceptional people with exceptional spaces — across Paris, Geneva, and Dubai.
-        </p>
-
-        <div className="fade-el">
-          <MagneticButton>
-            <button
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "16px",
-                background: "var(--off-white)",
-                border: "none",
-                padding: "18px 40px",
-                ...inter,
-                fontSize: "9px",
-                letterSpacing: "0.3em",
-                textTransform: "uppercase",
-                color: "var(--warm-black)",
-                cursor: "none",
-                transition: "background 0.4s cubic-bezier(0.16,1,0.3,1)",
-              }}
-              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.background = "rgba(242,237,230,0.85)")}
-              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.background = "var(--off-white)")}
-            >
-              Book Consultation
-              <svg width="16" height="9" viewBox="0 0 16 9" fill="none">
-                <path d="M0 4.5h14M10 1l4 3.5-4 3.5" stroke="currentColor" strokeWidth="0.8" strokeLinecap="round" />
-              </svg>
-            </button>
-          </MagneticButton>
-        </div>
+        FORMA
       </div>
 
-      {/* ── Right: image ── */}
-      <div
-        ref={imgRef}
-        style={{ overflow: "hidden", minHeight: "400px" }}
-        data-cursor="view"
-      >
-        <img
-          ref={imgInnerRef}
-          src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80"
-          alt="Architecture"
-          style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", display: "block", minHeight: "400px" }}
-        />
+      <div className="cta-content" style={{ opacity: 0, maxWidth: "680px", position: "relative" }}>
+        <div className="section-label" style={{ marginBottom: "2rem" }}>
+          Contact
+        </div>
+
+        <h2 style={{
+          fontFamily: "var(--font-syne)",
+          fontSize: "clamp(34px, 5vw, 68px)",
+          fontWeight: 800,
+          letterSpacing: "-0.03em",
+          color: "var(--dark)",
+          lineHeight: 1.0,
+          marginBottom: "1.5rem",
+        }}>
+          Parlons de Votre{" "}
+          <span style={{
+            fontFamily: "var(--font-fraunces)",
+            fontStyle: "italic",
+            fontWeight: 300,
+            color: "var(--accent)",
+          }}>
+            Projet
+          </span>
+        </h2>
+
+        <p style={{
+          fontFamily: "var(--font-dm)",
+          fontSize: "15px",
+          lineHeight: 1.8,
+          color: "var(--muted)",
+          maxWidth: "460px",
+          marginBottom: "3rem",
+        }}>
+          Que vous souhaitiez acheter, vendre ou investir, notre équipe est
+          à votre écoute pour vous proposer les meilleures opportunités du marché.
+        </p>
+
+        {/* Action buttons */}
+        <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", marginBottom: "3.5rem" }}>
+          <a
+            href="tel:+33100000000"
+            style={{
+              display: "inline-flex", alignItems: "center", gap: "0.7rem",
+              padding: "1.1rem 2.2rem",
+              background: "var(--dark)",
+              color: "var(--ivory)",
+              textDecoration: "none",
+              fontFamily: "var(--font-syne)",
+              fontSize: "10px", letterSpacing: "0.22em", textTransform: "uppercase",
+              transition: "background 0.35s",
+            }}
+            onMouseEnter={e => ((e.currentTarget as HTMLElement).style.background = "var(--accent)")}
+            onMouseLeave={e => ((e.currentTarget as HTMLElement).style.background = "var(--dark)")}
+          >
+            +33 1 00 00 00 00
+          </a>
+          <a
+            href="mailto:contact@forma-immobilier.fr"
+            style={{
+              display: "inline-flex", alignItems: "center", gap: "0.7rem",
+              padding: "1.1rem 2.2rem",
+              border: "1px solid var(--border)",
+              color: "var(--dark)",
+              textDecoration: "none",
+              fontFamily: "var(--font-syne)",
+              fontSize: "10px", letterSpacing: "0.22em", textTransform: "uppercase",
+              transition: "border-color 0.3s, color 0.3s",
+            }}
+            onMouseEnter={e => {
+              (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)";
+              (e.currentTarget as HTMLElement).style.color = "var(--accent)";
+            }}
+            onMouseLeave={e => {
+              (e.currentTarget as HTMLElement).style.borderColor = "var(--border)";
+              (e.currentTarget as HTMLElement).style.color = "var(--dark)";
+            }}
+          >
+            contact@forma-immobilier.fr
+          </a>
+        </div>
+
+        {/* Offices strip */}
+        <div
+          className="cta-cities"
+          style={{
+            display: "flex",
+            gap: "2.5rem",
+            paddingTop: "2.5rem",
+            borderTop: "1px solid var(--border)",
+          }}
+        >
+          {CITIES.map((city, i) => (
+            <div key={i}>
+              <div style={{
+                fontFamily: "var(--font-syne)",
+                fontSize: "12px", fontWeight: 600,
+                color: "var(--dark)", marginBottom: "0.2rem",
+              }}>
+                {city}
+              </div>
+              <div style={{
+                fontFamily: "var(--font-dm)",
+                fontSize: "10px",
+                color: "var(--muted)",
+                letterSpacing: "0.05em",
+              }}>
+                Bureau local
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
