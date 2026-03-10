@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import SplitText from "./SplitText";
 import MagneticButton from "./MagneticButton";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -77,36 +78,29 @@ export default function CTA() {
 
         {/* Large headline — char by char */}
         <div style={{ marginBottom: "clamp(28px, 4vw, 48px)" }}>
-          <div style={{ overflow: "hidden", lineHeight: 0.9, marginBottom: "0.05em" }}>
-            {"Find the".split("").map((ch, i) => (
-              <span key={i} style={{ overflow: "hidden", display: "inline-block", verticalAlign: "bottom" }}>
-                <span className="sci" style={{ display: "inline-block", ...serif, fontSize: "clamp(52px, 8.5vw, 128px)", fontWeight: 300, letterSpacing: "-0.035em", color: "var(--off-white)" }}>
-                  {ch === " " ? "\u00A0" : ch}
-                </span>
-              </span>
-            ))}
-          </div>
-          <div style={{ overflow: "hidden", lineHeight: 0.9, marginBottom: "0.05em", marginLeft: "clamp(20px, 4vw, 60px)" }}>
-            {"space that".split("").map((ch, i) => (
-              <span key={i} style={{ overflow: "hidden", display: "inline-block", verticalAlign: "bottom" }}>
-                <span className="sci" style={{ display: "inline-block", ...serif, fontSize: "clamp(52px, 8.5vw, 128px)", fontWeight: 300, letterSpacing: "-0.035em", color: "var(--off-white)" }}>
-                  {ch === " " ? "\u00A0" : ch}
-                </span>
-              </span>
-            ))}
-          </div>
-          <div style={{ overflow: "hidden", lineHeight: 0.9 }}>
-            {"defines you.".split("").map((ch, i) => (
-              <span key={i} style={{ overflow: "hidden", display: "inline-block", verticalAlign: "bottom" }}>
-                <span className="sci" style={{
-                  display: "inline-block", ...serif, fontSize: "clamp(52px, 8.5vw, 128px)", fontWeight: 300, fontStyle: "italic", letterSpacing: "-0.035em",
-                  background: "linear-gradient(120deg,#7a7a7a,#d0d0d0,#9a9a9a)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
-                }}>
-                  {ch === " " ? "\u00A0" : ch}
-                </span>
-              </span>
-            ))}
-          </div>
+          <SplitText
+            text="Find the"
+            tag="div"
+            style={{ ...serif, fontSize: "clamp(52px, 8.5vw, 128px)", fontWeight: 300, letterSpacing: "-0.035em", color: "var(--off-white)", lineHeight: 0.9, marginBottom: "0.05em" }}
+          />
+          <SplitText
+            text="space that"
+            tag="div"
+            style={{ ...serif, fontSize: "clamp(52px, 8.5vw, 128px)", fontWeight: 300, letterSpacing: "-0.035em", color: "var(--off-white)", lineHeight: 0.9, marginBottom: "0.05em", marginLeft: "clamp(20px, 4vw, 60px)" }}
+          />
+          <SplitText
+            text="defines you."
+            tag="div"
+            style={{
+              ...serif,
+              fontSize: "clamp(52px, 8.5vw, 128px)",
+              fontWeight: 300,
+              fontStyle: "italic",
+              letterSpacing: "-0.035em",
+              background: "linear-gradient(120deg,#7a7a7a,#d0d0d0,#9a9a9a)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
+              lineHeight: 0.9,
+            }}
+          />
         </div>
 
         <p className="fade-el" style={{ ...inter, fontSize: "13px", letterSpacing: "0.03em", lineHeight: 1.9, color: "rgba(242,237,230,0.4)", maxWidth: "340px", fontWeight: 300, marginBottom: "clamp(32px, 5vw, 56px)" }}>
