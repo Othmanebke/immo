@@ -4,10 +4,10 @@ import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 
 const LINKS = [
-  { num: "01", label: "Propriétés", href: "#properties" },
-  { num: "02", label: "Services",   href: "#services"   },
-  { num: "03", label: "L'Agence",  href: "#about"      },
-  { num: "04", label: "Contact",    href: "#contact"    },
+  { num: "01", label: "Propriétés", href: "/proprietes"  },
+  { num: "02", label: "Services",   href: "/#services"   },
+  { num: "03", label: "L'Agence",  href: "/#about"      },
+  { num: "04", label: "Contact",    href: "/#contact"    },
 ];
 
 export default function Navigation() {
